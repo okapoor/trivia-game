@@ -100,12 +100,14 @@ var setupTriviabox = function(category) {
 	timer.html("00:30");
 	mainbox.append(timer);
 	countdown = setInterval(startCount, 1000);
-	mainbox.append("<br><br>");
+	mainbox.append("<br>");
+
 	//add the answer options
 	for (var j = 0 ; j < dataObject[questionIndex].answers.length;j++){
 		answerdiv = $("<div>", {
 			class: "answerbox",
 		});
+		
 		answerdiv.html(dataObject[questionIndex].answers[j]);
 		mainbox.append(answerdiv);
 	}
@@ -199,7 +201,7 @@ var answerTime = function (answer) {
 	}else {
 		wrongAnswer++;
 		losses.fadeOut();
-		losses.html(wrongAnswer);
+		losses.html("Incorrect Answer : " + wrongAnswer);
 		wrongAnswer++;
 		losses.fadeIn();
 		console.log("Incorrect Answer : " + wrongAnswer);
@@ -243,20 +245,19 @@ for (var i = 0 ; i<triviaOptions.length;i++){
 
 
 $(document).ready(function (){
-	
-	$(".categorybox").click(function (){
+	$(".categorybox").on("click",function (){
 		// console.log(this.innerHTML);
 		setupTriviabox(this.innerHTML);
 		console.log("something is hapenning")
 	})
 
-	$(".answerbox").click (function(){
+	$(".answerbox").on("click",function(){
 		// debugger;
 		console.log("answer box clicked!!!")
 		nextQuesitonFunct();
 	})
 
-	$("#nextQuesiton").click (function(){
+	$("#nextQuesiton").on("click",function(){
 		nextQuesitonFunct();
 	})
 
