@@ -822,7 +822,7 @@ var resetGame = function () {
 	console.log("Restting game");
 	mainbox.empty();
 
-	mainbox.prepend("<h2> Please select one of the below categories :  </h2>")
+	mainbox.prepend("<h2> Please select a category :  </h2>")
 	var choicediv
 	for (var i = 0 ; i<triviaOptions.length;i++){
 		var choice=triviaOptions[i].option;
