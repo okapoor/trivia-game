@@ -30,9 +30,27 @@ var dataObject = [
   	rightAnswer: "Read after write consistency" 
 	},
 ]
+https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple
 
-
-var triviaOptions = ["AWS", "Psychiatry", "Sports"];
+// var triviaOptions = ["Sports", "Psychiatry", "Sports"];
+var triviaOptions = [
+{
+	option: "Sports",
+	url: "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple"
+}
+{
+	option: "Geography",
+	url: "https://opentdb.com/api.php?amount=10&category=22&difficulty=easy&type=multiple"
+}
+{
+	option: "Computers",
+	url: "https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple"
+}
+{
+	option: "Art",
+	url: "https://opentdb.com/api.php?amount=10&category=25&difficulty=easy&type=multiple"
+}
+]
 var mainbox ;
 var questiondiv;
 var answerdiv;
@@ -69,6 +87,11 @@ var timeConverter =  function(t) {
 	return minutes + ":" + seconds;
 }
 
+
+//===========================================
+//Initial trivia box setup question based on category input
+//===========================================
+
 var setupTriviabox = function(category) {
 	switch (category) {
 		case "AWS":
@@ -76,11 +99,15 @@ var setupTriviabox = function(category) {
 			break;
 		case "Psychiatry":
 			console.log("Psyc selected");
+			var ourObject = dataObject;
 			break;
 		case "Sports":
 			console.log("Sports selected");
+			var ourObject = dataObject;
 			break;
 	}
+
+
 	// Setup the page for questions
 
 	//clear out old stuff
@@ -104,10 +131,11 @@ var setupTriviabox = function(category) {
 
 	//add the answer options
 	for (var j = 0 ; j < dataObject[questionIndex].answers.length;j++){
+
 		answerdiv = $("<div>", {
 			class: "answerbox",
 		});
-		
+
 		answerdiv.html(dataObject[questionIndex].answers[j]);
 		mainbox.append(answerdiv);
 	}
@@ -139,6 +167,9 @@ var setupTriviabox = function(category) {
 
 }
 
+//===========================================
+//Timer start function
+//===========================================
 
 var startCount = function () {
 	if(timeup>0){
@@ -154,8 +185,15 @@ var startCount = function () {
 
 
 
-
+//===========================================
+//Transition to next question
+//===========================================
 var nextQuesitonFunct = function () {
+	
+	clearInterval(countdown);
+	timeup = 30;
+	
+
 	if (questionIndex === dataObject.length) {
 		resetGame();
 	} else {
@@ -180,7 +218,7 @@ var nextQuesitonFunct = function () {
 		//add the answer options
 		for (var j = 0 ; j < dataObject[questionIndex].answers.length;j++){
 			answerdiv = $("<div>", {
-			class: "categorybox"
+			class: "answerbox"
 			});
 			answerdiv.html(dataObject[questionIndex].answers[j]);
 			mainbox.append(answerdiv);
@@ -188,19 +226,28 @@ var nextQuesitonFunct = function () {
 	}
 }
 
+
+//===========================================
+//Review user selection and provide info on answer
+//===========================================
 var answerTime = function (answer) {
+	clearInterval(countdown);
+	timeup = 30;
+
 	$(".answerdiv").fadeOut();
 	$("#question").fadeOut();
 	console.log ("The Answer selected is : " + answer);
 	if (answer === dataObject[questionIndex].rightAnswer) {
 		correctAnswer++;
 		wins.fadeOut();
+		wins.empty();	
 		wins.html("Correct Answer : " + correctAnswer);
 		wins.fadeIn();
 
 	}else {
 		wrongAnswer++;
 		losses.fadeOut();
+		losses.empty();
 		losses.html("Incorrect Answer : " + wrongAnswer);
 		wrongAnswer++;
 		losses.fadeIn();
@@ -222,6 +269,9 @@ var answerTime = function (answer) {
 
 }
 
+//===========================================
+//Reset game when questions are completed
+//===========================================
 var resetGame = function () {
 	console.log("Restting game");
 }
@@ -232,7 +282,7 @@ mainbox = $("#mainbox");
 mainbox.prepend("<h2> Please select one of the below categories :  </h2>")
 var choicediv
 for (var i = 0 ; i<triviaOptions.length;i++){
-	var choice=triviaOptions[i];
+	var choice=triviaOptions[i].option;
 	choicediv = $("<div>", {
 		class: "categorybox",
 	})
@@ -242,22 +292,28 @@ for (var i = 0 ; i<triviaOptions.length;i++){
 
 }
 
+// $(document).ready(function (){
+// 	$(".categorybox").click(setupTriviabox(this.innerHTML));
+// 	$(".answerbox").click(answerTime(this.html));
+// 	$("#nextQuesiton").click(nextQuesitonFunct());
+// 	})
 
 
 $(document).ready(function (){
-	$(".categorybox").on("click",function (){
+	$(document).on("click",".categorybox",function (){
 		// console.log(this.innerHTML);
 		setupTriviabox(this.innerHTML);
 		console.log("something is hapenning")
 	})
 
-	$(".answerbox").on("click",function(){
+	$(document).on("click",".answerbox",function(){
 		// debugger;
 		console.log("answer box clicked!!!")
-		nextQuesitonFunct();
+		answerTime(this.html);
 	})
 
-	$("#nextQuesiton").on("click",function(){
+	$(document).on("click","#nextbox",function(){
+		console.log("Next wuestion was clicked")
 		nextQuesitonFunct();
 	})
 
