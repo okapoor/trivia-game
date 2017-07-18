@@ -72,6 +72,19 @@ h2 {
 	cursor:pointer;
 }
 
+#resetgamebox {
+	color: black;
+	background: url(../images/answerbg.png);
+	width: 300px;
+	margin: 20px auto;
+	padding: 5px 5px 5px 5px;
+	box-shadow: 2px 2px 15px 0 white;
+	text-align: center;
+	border: thin #a0d1f7 solid;
+	border-radius: 5px;
+	cursor:pointer;
+}
+
 .categorybox {
 	color: black;
 	background: url(../images/answerbg.png);
@@ -99,6 +112,10 @@ h2 {
 }
 
 #nextbox:hover {
+	transform: scale(1.1);
+	cursor:pointer;
+}
+#resetgamebox:hover {
 	transform: scale(1.1);
 	cursor:pointer;
 }
